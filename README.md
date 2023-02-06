@@ -23,11 +23,11 @@ Para correr el proyecto ejecutar los siguientes comandos
   ```
 
   El proyecto se ejecutara en el puerto 3002 por defecto, a menos que se configure en el archivo .env
+  
+  Al ejecutar el proyecto puede encontrar la documentación en swagger entrando a la ruta /api-doc/
 
 
 Me gustaria comentar que por temas de tiempo no se implemento lo siguiente
 
-- Validación de los modelos de dominio, se pretendía utilizar express-validator
 - Autenticación JWT
-- Middleware de errores
 - Respuestas genericas en controladores

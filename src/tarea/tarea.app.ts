@@ -4,6 +4,8 @@ import "dotenv/config";
 import tareaRoute from './infraestructure/route/tareaRoute';
 import swaggerUi from "swagger-ui-express";
 import swaggerJsDoc from "swagger-jsdoc";
+import errorMiddleware from "./error.middleware";
+import { v4 as uuid} from 'uuid'
 
 
 
@@ -23,7 +25,7 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: "http://localhost:"+process.env.PORT || 3002,
+        url: "http://localhost:" + process.env.PORT || 3002,
       },
     ],
   },
@@ -35,13 +37,14 @@ const port = process.env.PORT || 3002;
 // middlewares
 app.use(express.json());
 app.use(cors());
-app.use("/api",tareaRoute);
+app.use("/api", tareaRoute);
 app.use(
   "/api-doc",
   swaggerUi.serve,
   swaggerUi.setup(swaggerJsDoc(swaggerOptions))
 );
+app.use(errorMiddleware);
 
 app.listen(port, () => {
-  console.info(`Corriendo en el puerto: ${port}`);
+  console.info(`Documentación disponible en: http://localhost:${process.env.PORT}/api-doc/`);
 });

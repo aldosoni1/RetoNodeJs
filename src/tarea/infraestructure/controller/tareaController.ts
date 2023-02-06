@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { RegistrarTareaInputModel } from "../../application/dtos/inputModels/registrarTareaInputModel";
 import { TareaOutputModel } from "../../application/dtos/outputModels/tareaOutputModel";
 import { ITareaService } from "../../application/services/ITareaService";
@@ -217,9 +217,15 @@ export class TareaController {
 *               $ref: '#/components/schemas/TareaOutputModel'
 *
 */
-  public getTareaById = async (req: Request, res: Response) => {
-    const tarea = await this.tareaService.get(req.params.idTarea, req.params.idUsuario);
-    res.status(200).send(tarea);
+  public getTareaById = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const tarea = await this.tareaService.get(req.params.idTarea, req.params.idUsuario);
+      res.status(200).send(tarea);
+    } catch (err) {
+      next(err);
+    }
+
+
   }
 
   /**
@@ -248,9 +254,14 @@ export class TareaController {
 *                 $ref: '#/components/schemas/TareaOutputModel'
 *
 */
-  public getAll = async (req: Request, res: Response) => {
-    const tareas = await this.tareaService.getAll(req.params.idUsuario);
-    res.send(tareas);
+  public getAll = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const tareas = await this.tareaService.getAll(req.params.idUsuario);
+      res.send(tareas);
+    } catch (error) {
+      next(error);
+    }
+
   }
 
   /**
@@ -288,9 +299,14 @@ export class TareaController {
  *               $ref: '#/components/schemas/TareaOutputModel'
  *
  */
-  public editarTarea = async (req: Request, res: Response) => {
-    const tarea = await this.tareaService.editarTarea(req.params.idTarea, req.body, req.params.idUsuario);
-    res.status(200).send({ tarea });
+  public editarTarea = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const tarea = await this.tareaService.editarTarea(req.params.idTarea, req.body, req.params.idUsuario);
+      res.status(200).send({ tarea });
+    } catch (err) {
+      next(err);
+    }
+
   }
 
   /**
@@ -322,8 +338,13 @@ export class TareaController {
   *               type: boolean
   *
   */
-  public borrarTarea = async (req: Request, res: Response) => {
-    const result = await this.tareaService.borrarTarea(req.params.idTarea, req.params.idUsuario);
-    res.status(200).send(result);
+  public borrarTarea = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const result = await this.tareaService.borrarTarea(req.params.idTarea, req.params.idUsuario);
+      res.status(200).send(result);
+    } catch (err) {
+      next(err);
+    }
+
   }
 }
